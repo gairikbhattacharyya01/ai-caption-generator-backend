@@ -1,3 +1,11 @@
+const express = require("express");
+const cors = require("cors");
+const fetch = require("node-fetch");
+
+const app = express();
+app.use(cors());
+app.use(express.json());
+
 app.post("/generate", async (req, res) => {
     const input = req.body.input;
 
@@ -5,7 +13,7 @@ app.post("/generate", async (req, res) => {
         const response = await fetch("https://openrouter.ai/api/v1/chat/completions", {
             method: "POST",
             headers: {
-                "Authorization": `Bearer ${process.env.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}`,
+                "Authorization": `Bearer ${process.env.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}`,
                 "Content-Type": "application/json"
             },
             body: JSON.stringify({
@@ -18,8 +26,6 @@ app.post("/generate", async (req, res) => {
 
         const data = await response.json();
 
-        console.log("FULL RESPONSE:", JSON.stringify(data, null, 2));
-
         if (!data.choices) {
             return res.json({
                 error: "API Error: " + (data.error?.message || "Unknown")
@@ -31,7 +37,13 @@ app.post("/generate", async (req, res) => {
         });
 
     } catch (error) {
-        console.log("CRASH ERROR:", error);
+        console.log(error);
         res.json({ error: "Server crashed" });
     }
+});
+
+const PORT = process.env.PORT || 3000;
+
+app.listen(PORT, () => {
+    console.log("Server running on port " + PORT);
 });
