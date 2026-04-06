@@ -13,7 +13,7 @@ app.post("/generate", async (req, res) => {
         const response = await fetch("https://openrouter.ai/api/v1/chat/completions", {
             method: "POST",
             headers: {
-                "Authorization": `Bearer ${process.env.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}`,
+                "Authorization": `Bearer ${process.env.API_KEY}`,
                 "Content-Type": "application/json"
             },
             body: JSON.stringify({
